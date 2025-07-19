@@ -2,6 +2,8 @@ import express from 'express';
 import * as dotenv from 'dotenv';
 import cors from 'cors';
 import OpenAI from 'openai';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 dotenv.config();
 
@@ -9,20 +11,19 @@ const openai = new OpenAI({
   baseURL: 'https://openrouter.ai/api/v1',
   apiKey: process.env.OPENAI_API_KEY,
   defaultHeaders: {
-    "HTTP-Referer": "http://localhost:5173", // Replace with your client's URL
-    "X-Title": "OpenAI App", // Replace with your app's name
+    "HTTP-Referer": process.env.APP_URL || "http://localhost:5173",
+    "X-Title": process.env.APP_NAME || "OpenAI App",
   },
 });
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(cors());
 app.use(express.json()); 
 
-app.get('/', async (req, res) => {
-  res.status(200).send({
-    message: 'Hello from Codex',
-  })
-});
+app.use(express.static(path.join(__dirname, '../client/dist')));
 
 app.post('/', async (req, res) => { 
   try {
