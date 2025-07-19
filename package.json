@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "node server.js",
-    "server": "nodemon server.js",
-    "build": "npm install --prefix ../client && npm run build --prefix ../client"
+    "build": "npm install && npm install --prefix client && npm run build --prefix client",
+    "start": "node server/server.js",
+    "server": "nodemon server.js"
+    
   },
   "keywords": [],
   "author": "",
